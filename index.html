@@ -3,32 +3,73 @@
 <head>
   <meta charset="UTF-8">
   <title>Dashboard Carteira</title>
+
+  <script src="https://api.bitrix24.com/api/v1/"></script>
+
   <style>
-    html, body {
+    body {
       margin: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-    iframe {
-      width: 100%;
-      height: 100vh;
-      border: 0;
-    }
-    .msg {
-      padding: 20px;
       font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background: #2fc6f6;
+      border: none;
+      padding: 12px 20px;
+      color: white;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1fb0df;
     }
   </style>
 </head>
-<body>
-  <iframe
-    src="https://b30310275.bi.bitrix24.com/superset/dashboard/117/?standalone=1"
-    allowfullscreen>
-  </iframe>
 
-  <noscript>
-    <div class="msg">Ative o JavaScript para abrir o dashboard.</div>
-  </noscript>
+<body>
+
+<div class="card">
+  <h1>📊 Dashboard Carteira</h1>
+  <p>Clique abaixo para abrir o dashboard no Bitrix</p>
+
+  <button onclick="abrirDashboard()">
+    Abrir Dashboard
+  </button>
+</div>
+
+<script>
+function abrirDashboard() {
+  BX24.init(function() {
+    BX24.openPath(
+      "/bi/dashboard/117/"
+    );
+  });
+}
+</script>
+
 </body>
 </html>

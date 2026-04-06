@@ -1,75 +1,101 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard Carteira</title>
-
   <script src="https://api.bitrix24.com/api/v1/"></script>
-
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f5f7fa;
+      background: #f3f5f7;
       display: flex;
-      justify-content: center;
       align-items: center;
-      height: 100vh;
+      justify-content: center;
+      min-height: 100vh;
     }
-
     .card {
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      background: #fff;
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.08);
       text-align: center;
+      width: 420px;
+      max-width: calc(100vw - 32px);
     }
-
     h1 {
-      margin-bottom: 10px;
+      margin: 0 0 12px;
+      font-size: 32px;
     }
-
     p {
-      color: #666;
-      margin-bottom: 20px;
+      color: #555;
+      margin: 0 0 20px;
     }
-
     button {
-      background: #2fc6f6;
-      border: none;
+      border: 0;
+      border-radius: 10px;
       padding: 12px 20px;
-      color: white;
-      font-size: 16px;
-      border-radius: 6px;
+      background: #27a9e3;
+      color: #fff;
       cursor: pointer;
+      font-size: 16px;
     }
-
-    button:hover {
-      background: #1fb0df;
+    button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+    .msg {
+      margin-top: 16px;
+      font-size: 14px;
+      color: #c0392b;
+      word-break: break-word;
     }
   </style>
 </head>
-
 <body>
+  <div class="card">
+    <h1>Dashboard Carteira</h1>
+    <p>Clique abaixo para abrir o dashboard no Bitrix.</p>
+    <button id="openBtn" disabled>Abrir Dashboard</button>
+    <div class="msg" id="msg"></div>
+  </div>
 
-<div class="card">
-  <h1>📊 Dashboard Carteira</h1>
-  <p>Clique abaixo para abrir o dashboard no Bitrix</p>
+  <script>
+    const DASHBOARD_URL = "https://masteratacadista.bitrix24.com.br/bi/dashboard/detail/88/?openFrom=grid";
 
-  <button onclick="abrirDashboard()">
-    Abrir Dashboard
-  </button>
-</div>
+    const openBtn = document.getElementById("openBtn");
+    const msg = document.getElementById("msg");
 
-<script>
-function abrirDashboard() {
-  BX24.init(function() {
-    BX24.openPath(
-      "/bi/dashboard/117/"
-    );
-  });
-}
-</script>
+    function setError(text) {
+      msg.textContent = text;
+      openBtn.disabled = false;
+    }
 
+    function openDashboard() {
+      window.location.href = DASHBOARD_URL;
+    }
+
+    function initBitrixApp() {
+      if (typeof BX24 === "undefined") {
+        setError("BX24 não carregou. Abra este app pelo Bitrix, não direto pelo link do Vercel.");
+        return;
+      }
+
+      BX24.init(function () {
+        openBtn.disabled = false;
+
+        openBtn.addEventListener("click", function () {
+          try {
+            openDashboard();
+          } catch (e) {
+            setError("Não foi possível abrir o dashboard.");
+          }
+        });
+      });
+    }
+
+    initBitrixApp();
+  </script>
 </body>
 </html>
